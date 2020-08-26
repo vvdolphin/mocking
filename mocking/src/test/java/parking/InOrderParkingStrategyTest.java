@@ -3,13 +3,13 @@ package parking;
 import mocking.CustomerDao;
 import org.junit.Assert;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class InOrderParkingStrategyTest {
 
@@ -56,7 +56,15 @@ public class InOrderParkingStrategyTest {
     public void testPark_givenNoAvailableParkingLot_thenCreateNoSpaceReceipt(){
 
 	    /* Exercise 2: Test park() method. Use Mockito.spy and Mockito.verify to test the situation for no available parking lot */
-
+        //given
+        ParkingLot parkingLot = new ParkingLot("south",10);
+        List<ParkingLot> parkingLots = new ArrayList<>();
+        Car car = createMockCar("BWM");
+        InOrderParkingStrategy parkingStrategy = Mockito.spy(new InOrderParkingStrategy());
+        //when
+        parkingStrategy.park(parkingLots, car);
+        //then
+        verify(parkingStrategy,times(1)).park(parkingLots,car);
     }
 
     @Test
