@@ -1,8 +1,10 @@
 package parking;
 
 import mocking.CustomerDao;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -12,7 +14,14 @@ import java.util.List;
 
 import static org.mockito.Mockito.*;
 
+@RunWith(MockitoJUnitRunner.class)
 public class VipParkingStrategyTest {
+
+  @Mock
+  CarDao carDao;
+
+  @InjectMocks
+  VipParkingStrategy vipParkingStrategy;
 
   @Test
   public void
@@ -43,10 +52,6 @@ public class VipParkingStrategyTest {
     vipParkingStrategy.park(parkingLots, car);
     doReturn(false).when(vipParkingStrategy).isAllowOverPark(car);
     verify(vipParkingStrategy, times(1)).createNoSpaceReceipt(car);
-
-
-
-
   }
 
   @Test
@@ -56,9 +61,13 @@ public class VipParkingStrategyTest {
      * You may refactor the code, or try to use
      * use @RunWith(MockitoJUnitRunner.class), @Mock (use Mockito, not PowerMock) and @InjectMocks
      */
-
-
-
+    when(carDao.isVip(anyString())).thenReturn(true);
+    Car car = new Car("Ase");
+    ParkingLot parkingLot = new ParkingLot("south", 1);
+    List<ParkingLot> parkingLots = new ArrayList<>();
+    parkingLots.add(parkingLot);
+    boolean allowOverPark = vipParkingStrategy.isAllowOverPark(car);
+    Assert.assertEquals(true,allowOverPark);
   }
 
   @Test
