@@ -111,6 +111,15 @@ public class VipParkingStrategyTest {
      * You may refactor the code, or try to use
      * use @RunWith(MockitoJUnitRunner.class), @Mock (use Mockito, not PowerMock) and @InjectMocks
      */
+    when(carDao.isVip(anyString())).thenReturn(false);
+    Car car = new Car("se");
+    ParkingLot parkingLot = new ParkingLot("south", 1);
+    List<ParkingLot> parkingLots = new ArrayList<>();
+    parkingLots.add(parkingLot);
+    boolean allowOverPark = vipParkingStrategy.isAllowOverPark(car);
+    Assert.assertEquals(false,allowOverPark);
+
+
   }
 
   private Car createMockCar(String carName) {
